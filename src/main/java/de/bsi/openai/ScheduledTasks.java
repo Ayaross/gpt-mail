@@ -17,7 +17,7 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 5000)
     public void pingPeriodiquement() {
-        String url = "http://localhost:8083/health";
+        String url = "https://gpt-mail-1.onrender.com/health";
         String response = restTemplate.getForObject(url, String.class);
         System.out.println(response);
     }
