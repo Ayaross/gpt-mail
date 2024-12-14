@@ -19,13 +19,22 @@ public class OpenAiApiClient {
 		DALL_E, GPT_4;
 	}
 
+	private static final String API_KEY = System.getenv("OPEN_API_KEY");
+
+	public OpenAiApiClient() {
+
+		if(API_KEY == null || API_KEY.isEmpty()){
+			throw new IllegalStateException("La clé API n'est pas définie");
+		}
+	}
+
 	private final HttpClient client = HttpClient.newHttpClient();
 
 	public String postToOpenAiApi(String requestBodyAsJson, OpenAiService service)
 			throws IOException, InterruptedException {
 		var request = HttpRequest.newBuilder().uri(selectUri(service))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + "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")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + API_KEY)
 				.POST(BodyPublishers.ofString(requestBodyAsJson)).build();
 		return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
 	}
