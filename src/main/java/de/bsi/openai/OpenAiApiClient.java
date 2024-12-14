@@ -19,9 +19,6 @@ public class OpenAiApiClient {
 		DALL_E, GPT_4;
 	}
 
-	@Value("${openai.api_key}")
-	private String openaiApiKey;
-
 	private final HttpClient client = HttpClient.newHttpClient();
 
 	public String postToOpenAiApi(String requestBodyAsJson, OpenAiService service)
