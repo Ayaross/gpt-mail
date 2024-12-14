@@ -19,11 +19,13 @@ public class OpenAiApiClient {
 		DALL_E, GPT_4;
 	}
 
-	private static final String API_KEY = "";
+	private static final String API_KEY = System.getenv("OPEN_API_KEY");
 
 	public OpenAiApiClient() {
 
-
+		if(API_KEY == null || API_KEY.isEmpty()){
+			throw new IllegalStateException("La clé API n'est pas définie");
+		}
 	}
 
 	private final HttpClient client = HttpClient.newHttpClient();
