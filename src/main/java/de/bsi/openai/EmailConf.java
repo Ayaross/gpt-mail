@@ -300,7 +300,21 @@ public class EmailConf {
                 return assistantResponse;
 
             }
-            final CompletionRequest.Message userMessage = new CompletionRequest.Message("user", message);
+
+            final String promptGptMail =
+                    "Tu es un assistant intelligent qui répond aux e-mails de manière professionnelle, " +
+                    "claire et courtoise. Voici un e-mail que tu as reçu de " +
+                    "l'expéditeur : --- [Contenu de l'e-mail reçu] " + message + " --- Ta mission est de rédiger une " +
+                    "réponse polie et précise en respectant ces consignes : " +
+                    "1. Commence toujours par une " + "formule d'appel, par exemple : \"Bonjour [Nom de l'expéditeur],\". " +
+                    "2. Résume l'objet de l'e-mail en une phrase courte pour montrer que tu as compris le message. " +
+                    "3. Rédige une réponse structurée qui répond précisément aux demandes ou questions de l'e-mail. " +
+                    "4. Termine avec une formule de politesse, comme : " +
+                    "\"Cordialement, [Votre Nom / Service].\". Si l'e-mail ne contient pas d'information " +
+                    "claire ou est hors sujet, réponds poliment que tu n'as pas compris la demande et invite l'expéditeur" +
+                    " à reformuler. Génère uniquement la réponse à l'e-mail, sans mentionner les consignes.";
+
+            final CompletionRequest.Message userMessage = new CompletionRequest.Message("user", promptGptMail);
             final List<CompletionRequest.Message> messages = List.of(userMessage);
             final CompletionRequest request = new CompletionRequest(GPT_MODEL, messages, 0.7);
 
@@ -377,23 +391,4 @@ public class EmailConf {
         e.printStackTrace();
     }
 
-
-
-
-    public void configureDataBase() throws SQLException {
-
-        // Informations de connexion à la base de données PostgreSQL
-        String url = "jdbc:postgresql://dpg-clcemgjmot1c73dfmjm0-a.oregon-postgres.render.com/ayarinho";
-        String utilisateur = "youssef";
-        String motDePasse = "I0yyHDMiLENpCfqsbSiyanQjFMbBt422";
-
-        // Établir une connexion à la base de données PostgreSQL
-        Connection connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-
-        // Requête SQL pour récupérer le fichier inséré (vous pouvez remplacer 1 par l'ID approprié)
-        String requeteSelect = "SELECT fichier FROM trainsetdata WHERE id = (SELECT MAX(id) FROM trainsetdata);";
-        PreparedStatement preparedStatementSelect = connexion.prepareStatement(requeteSelect);
-
-        ResultSet resultSet = preparedStatementSelect.executeQuery();
-    }
 }
